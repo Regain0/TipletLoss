@@ -1,0 +1,228 @@
+nohup: ignoring input
+Files already downloaded and verified
+Files already downloaded and verified
+cuda
+Let's use 2 GPUs!
+/home/lgy/anaconda3/envs/mia/lib/python3.7/site-packages/torch/nn/functional.py:718: UserWarning: Named tensors and all their associated APIs are an experimental feature and subject to change. Please do not use them for anything important until they are released as stable. (Triggered internally at  /opt/conda/conda-bld/pytorch_1623448224956/work/c10/core/TensorImpl.h:1156.)
+  return torch.max_pool2d(input, kernel_size, stride, padding, dilation, ceil_mode)
+Train: [0/50000 (0%)]	Loss: 1.152984	Average nonzero triplets: 3000.0
+Train: [37500/50000 (75%)]	Loss: 0.763159	Average nonzero triplets: 2999.973509933775
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 1/20. Train set: Average loss: 0.7340	Average nonzero triplets: 2999.969849246231
+Epoch: 1/20. Validation set: Average loss: 0.6144	Average nonzero triplets: 2999.974358974359
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.591199	Average nonzero triplets: 3000.0
+Train: [37500/50000 (75%)]	Loss: 0.622442	Average nonzero triplets: 2999.887417218543
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 2/20. Train set: Average loss: 0.6191	Average nonzero triplets: 2999.899497487437
+Epoch: 2/20. Validation set: Average loss: 0.6181	Average nonzero triplets: 2999.897435897436
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.599314	Average nonzero triplets: 3000.0
+Train: [37500/50000 (75%)]	Loss: 0.602772	Average nonzero triplets: 2999.635761589404
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 3/20. Train set: Average loss: 0.6009	Average nonzero triplets: 2999.5577889447236
+Epoch: 3/20. Validation set: Average loss: 0.6215	Average nonzero triplets: 2998.923076923077
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.634405	Average nonzero triplets: 3000.0
+Train: [37500/50000 (75%)]	Loss: 0.594386	Average nonzero triplets: 2998.1721854304637
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 4/20. Train set: Average loss: 0.5917	Average nonzero triplets: 2998.145728643216
+Epoch: 4/20. Validation set: Average loss: 0.6440	Average nonzero triplets: 2997.3333333333335
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.601854	Average nonzero triplets: 3000.0
+Train: [37500/50000 (75%)]	Loss: 0.573747	Average nonzero triplets: 2992.9403973509934
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 5/20. Train set: Average loss: 0.5689	Average nonzero triplets: 2991.477386934673
+Epoch: 5/20. Validation set: Average loss: 0.6759	Average nonzero triplets: 2993.6923076923076
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.600991	Average nonzero triplets: 2982.0
+Train: [37500/50000 (75%)]	Loss: 0.519812	Average nonzero triplets: 2958.8543046357618
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 6/20. Train set: Average loss: 0.5192	Average nonzero triplets: 2953.5577889447236
+Epoch: 6/20. Validation set: Average loss: 0.6386	Average nonzero triplets: 2993.923076923077
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.479873	Average nonzero triplets: 2846.0
+Train: [37500/50000 (75%)]	Loss: 0.517134	Average nonzero triplets: 2882.0397350993376
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 7/20. Train set: Average loss: 0.5151	Average nonzero triplets: 2878.5879396984924
+Epoch: 7/20. Validation set: Average loss: 0.7024	Average nonzero triplets: 2989.846153846154
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.559003	Average nonzero triplets: 2907.0
+Train: [37500/50000 (75%)]	Loss: 0.503456	Average nonzero triplets: 2810.9602649006624
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 8/20. Train set: Average loss: 0.5001	Average nonzero triplets: 2804.0804020100504
+Epoch: 8/20. Validation set: Average loss: 0.7227	Average nonzero triplets: 2986.871794871795
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.591346	Average nonzero triplets: 2715.0
+Train: [37500/50000 (75%)]	Loss: 0.461808	Average nonzero triplets: 2657.6490066225165
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 9/20. Train set: Average loss: 0.4602	Average nonzero triplets: 2658.452261306533
+Epoch: 9/20. Validation set: Average loss: 0.7377	Average nonzero triplets: 2986.076923076923
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.441216	Average nonzero triplets: 2607.0
+Train: [37500/50000 (75%)]	Loss: 0.456738	Average nonzero triplets: 2571.781456953642
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 10/20. Train set: Average loss: 0.4545	Average nonzero triplets: 2562.5628140703516
+Epoch: 10/20. Validation set: Average loss: 0.7563	Average nonzero triplets: 2983.4102564102564
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.449392	Average nonzero triplets: 2824.0
+Train: [37500/50000 (75%)]	Loss: 0.452231	Average nonzero triplets: 2566.748344370861
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 11/20. Train set: Average loss: 0.4487	Average nonzero triplets: 2556.502512562814
+Epoch: 11/20. Validation set: Average loss: 0.7563	Average nonzero triplets: 2983.74358974359
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.459115	Average nonzero triplets: 1943.0
+Train: [37500/50000 (75%)]	Loss: 0.451656	Average nonzero triplets: 2499.158940397351
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 12/20. Train set: Average loss: 0.4498	Average nonzero triplets: 2497.256281407035
+Epoch: 12/20. Validation set: Average loss: 0.7763	Average nonzero triplets: 2980.7948717948716
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.443392	Average nonzero triplets: 2527.0
+Train: [37500/50000 (75%)]	Loss: 0.439693	Average nonzero triplets: 2453.4437086092717
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 13/20. Train set: Average loss: 0.4418	Average nonzero triplets: 2468.6532663316584
+Epoch: 13/20. Validation set: Average loss: 0.7808	Average nonzero triplets: 2982.4871794871797
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.492057	Average nonzero triplets: 2464.0
+Train: [37500/50000 (75%)]	Loss: 0.442864	Average nonzero triplets: 2430.4834437086092
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 14/20. Train set: Average loss: 0.4406	Average nonzero triplets: 2440.7738693467336
+Epoch: 14/20. Validation set: Average loss: 0.7664	Average nonzero triplets: 2981.3076923076924
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.471926	Average nonzero triplets: 2356.0
+Train: [37500/50000 (75%)]	Loss: 0.433600	Average nonzero triplets: 2403.5298013245033
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 15/20. Train set: Average loss: 0.4320	Average nonzero triplets: 2399.3718592964824
+Epoch: 15/20. Validation set: Average loss: 0.7841	Average nonzero triplets: 2981.6666666666665
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.432339	Average nonzero triplets: 2216.0
+Train: [37500/50000 (75%)]	Loss: 0.435808	Average nonzero triplets: 2419.6490066225165
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 16/20. Train set: Average loss: 0.4318	Average nonzero triplets: 2411.9849246231156
+Epoch: 16/20. Validation set: Average loss: 0.7929	Average nonzero triplets: 2980.0
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.456772	Average nonzero triplets: 2130.0
+Train: [37500/50000 (75%)]	Loss: 0.437331	Average nonzero triplets: 2359.3774834437086
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 17/20. Train set: Average loss: 0.4336	Average nonzero triplets: 2363.291457286432
+Epoch: 17/20. Validation set: Average loss: 0.7979	Average nonzero triplets: 2980.5384615384614
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.404161	Average nonzero triplets: 2311.0
+Train: [37500/50000 (75%)]	Loss: 0.437567	Average nonzero triplets: 2350.437086092715
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 18/20. Train set: Average loss: 0.4331	Average nonzero triplets: 2354.3467336683416
+Epoch: 18/20. Validation set: Average loss: 0.7903	Average nonzero triplets: 2978.6666666666665
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.441070	Average nonzero triplets: 2328.0
+Train: [37500/50000 (75%)]	Loss: 0.433426	Average nonzero triplets: 2338.5165562913908
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 19/20. Train set: Average loss: 0.4334	Average nonzero triplets: 2329.758793969849
+Epoch: 19/20. Validation set: Average loss: 0.7989	Average nonzero triplets: 2982.0
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Train: [0/50000 (0%)]	Loss: 0.408796	Average nonzero triplets: 2591.0
+Train: [37500/50000 (75%)]	Loss: 0.429218	Average nonzero triplets: 2346.7682119205297
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Epoch: 20/20. Train set: Average loss: 0.4279	Average nonzero triplets: 2341.929648241206
+Epoch: 20/20. Validation set: Average loss: 0.7967	Average nonzero triplets: 2981.025641025641
+1, loss: 2.292
+2, loss: 2.043
+3, loss: 1.863
+4, loss: 1.711
+5, loss: 1.582
+6, loss: 1.472
+7, loss: 1.377
+8, loss: 1.295
+9, loss: 1.224
+10, loss: 1.163
+11, loss: 1.108
+12, loss: 1.061
+13, loss: 1.019
+14, loss: 0.981
+15, loss: 0.947
+16, loss: 0.916
+17, loss: 0.889
+18, loss: 0.864
+19, loss: 0.841
+20, loss: 0.820
+21, loss: 0.800
+22, loss: 0.782
+23, loss: 0.766
+24, loss: 0.751
+25, loss: 0.736
+26, loss: 0.723
+27, loss: 0.710
+28, loss: 0.698
+29, loss: 0.687
+30, loss: 0.677
+31, loss: 0.667
+32, loss: 0.658
+33, loss: 0.649
+34, loss: 0.641
+35, loss: 0.633
+36, loss: 0.625
+37, loss: 0.618
+38, loss: 0.611
+39, loss: 0.605
+40, loss: 0.598
+41, loss: 0.592
+42, loss: 0.587
+43, loss: 0.581
+44, loss: 0.576
+45, loss: 0.571
+46, loss: 0.566
+47, loss: 0.562
+48, loss: 0.557
+49, loss: 0.553
+50, loss: 0.549
+51, loss: 0.545
+52, loss: 0.541
+53, loss: 0.537
+54, loss: 0.533
+55, loss: 0.530
+56, loss: 0.527
+57, loss: 0.524
+58, loss: 0.520
+59, loss: 0.517
+60, loss: 0.514
+61, loss: 0.511
+62, loss: 0.508
+63, loss: 0.506
+64, loss: 0.503
+65, loss: 0.500
+66, loss: 0.498
+67, loss: 0.495
+68, loss: 0.493
+69, loss: 0.491
+70, loss: 0.488
+71, loss: 0.486
+72, loss: 0.484
+73, loss: 0.482
+74, loss: 0.480
+75, loss: 0.478
+76, loss: 0.476
+77, loss: 0.474
+78, loss: 0.472
+79, loss: 0.470
+80, loss: 0.469
+81, loss: 0.467
+82, loss: 0.465
+83, loss: 0.463
+84, loss: 0.462
+85, loss: 0.461
+86, loss: 0.459
+87, loss: 0.457
+88, loss: 0.456
+89, loss: 0.454
+90, loss: 0.454
+91, loss: 0.452
+92, loss: 0.450
+93, loss: 0.449
+94, loss: 0.447
+95, loss: 0.446
+96, loss: 0.445
+97, loss: 0.444
+98, loss: 0.443
+99, loss: 0.441
+100, loss: 0.440
+Finished Training
+Accuracy of the network on the 10000 test images: 59 %
