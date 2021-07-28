@@ -56,7 +56,7 @@ class VGG(nn.Module):
     def __init__(self, vgg_name):
         super(VGG, self).__init__()
         self.features = self._make_layers(cfg[vgg_name])
-        self.classifier = nn.Linear(4096, dim_embedding)
+        self.classifier = nn.Linear(512, dim_embedding)
         # 512->64
 
     def forward(self, x):
@@ -120,7 +120,7 @@ cuda=device
 
 
 margin = .6
-embedding_net = VGG('shallow2')
+embedding_net = VGG('VGG11')
 model = embedding_net
 # if cuda:
 #    model.cuda()

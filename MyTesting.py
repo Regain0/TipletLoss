@@ -13,6 +13,8 @@ from torch.optim import lr_scheduler
 import torch.optim as optim
 from trainer import fit
 from torch.utils import data
+import time
+import matplotlib.pyplot as plt
 
 dim_embedding=10
 
@@ -55,7 +57,7 @@ class VGG(nn.Module):
     def __init__(self, vgg_name):
         super(VGG, self).__init__()
         self.features = self._make_layers(cfg[vgg_name])
-        self.classifier = nn.Linear(4096, dim_embedding)
+        self.classifier = nn.Linear(512, dim_embedding)
         #512->64
 
     def forward(self, x):
@@ -127,7 +129,7 @@ net.to(device)
 
 
 margin = .6
-embedding_net = VGG('shallow2')
+embedding_net = VGG('VGG11')
 model = embedding_net
 #if cuda:
 #    model.cuda()
@@ -138,7 +140,7 @@ if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 model.to(device)
 
-PATH = './saved_models/shallow2_ran_1.pth'
+PATH = './saved_models/vgg11_ran_20.pth'
 SD=torch.load(PATH)
 model.load_state_dict(SD)
 
@@ -264,20 +266,137 @@ def dist_from_single(anchor,anchor_class, train_embeddings, train_labels,test_em
         print("max_dist from anchor",max_dist)
         print("min_dist from anchor",min_dist)
 
+'''
 print("----------one point picked from train set----------")
+
 anchor=train_embeddings_ocl[0]
 anchor_class=train_labels_ocl[0]
 dist_from_single(anchor,anchor_class,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10)
 
+
 print("----------one point picked from test set----------")
+time_start=time.time()
 anchor=test_embeddings_ocl[0]
 anchor_class=test_labels_ocl[0]
 dist_from_single(anchor,anchor_class,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10)
+time_end=time.time()
+print('totally cost',time_end-time_start)
+
+'''
+def max_dist_distribution(chosen_class,sample_embeddings, sample_labels,target_embeddings,target_labels, cnt_type,image_name):
+    assert sample_embeddings.shape[0] == sample_labels.shape[0]
+    assert target_embeddings.shape[0] == target_labels.shape[0]
+    sample_cnt_sample = sample_embeddings.shape[0]
+    sample_embedding_dimension = sample_embeddings.shape[1]
+    target_cnt_sample = target_embeddings.shape[0]
+    target_embedding_dimension = target_embeddings.shape[1]
 
 
+    sample_classified_sample = np.zeros(
+        shape=(cnt_type, MaxSize, sample_embedding_dimension))
+    sample_classified_cnt = [0 for i in range(10)]
+
+    target_classified_sample = np.zeros(
+        shape=(cnt_type, MaxSize, target_embedding_dimension))
+    target_classified_cnt = [0 for i in range(10)]
+
+    for i in range(sample_cnt_sample):
+        sample_classified_sample[int(sample_labels[i])][sample_classified_cnt[int(sample_labels[i])]] = sample_embeddings[i]
+        sample_classified_cnt[int(sample_labels[i])] += 1
+
+    for i in range(target_cnt_sample):
+        target_classified_sample[int(target_labels[i])][target_classified_cnt[int(target_labels[i])]] = target_embeddings[i]
+        target_classified_cnt[int(target_labels[i])] += 1
 
 
+    print("our selected anchor from class",chosen_class)
 
+    list_max_dist=[]
+    for i in range(sample_classified_cnt[chosen_class]):
+        anchor=sample_classified_sample[chosen_class][i]
+        max_dist = np.linalg.norm(
+            target_classified_sample[chosen_class][0]-anchor, ord=2, keepdims=False)
+        for j in range(target_classified_cnt[chosen_class]):
+            current_dist = np.linalg.norm(
+                target_classified_sample[chosen_class][j]-anchor, ord=2, keepdims=False)
+            if(current_dist>max_dist):
+                max_dist=current_dist
+        list_max_dist.append(max_dist)
+    #print(list_max_dist)
+    np_max_dist = np.array(list_max_dist)
+
+    my_bin=[]
+    for i in range(31):
+        my_bin.append(0.1*i)
+
+    plt.cla
+    plt.hist(np_max_dist, bins =  my_bin) 
+    plt.title("histogram") 
+    plt.savefig("./saved_pics/"+image_name)
+    plt.show()
+    return list_max_dist
+
+def avg_dist_distribution(chosen_class,sample_embeddings, sample_labels,target_embeddings,target_labels, cnt_type,image_name):
+    assert sample_embeddings.shape[0] == sample_labels.shape[0]
+    assert target_embeddings.shape[0] == target_labels.shape[0]
+    sample_cnt_sample = sample_embeddings.shape[0]
+    sample_embedding_dimension = sample_embeddings.shape[1]
+    target_cnt_sample = target_embeddings.shape[0]
+    target_embedding_dimension = target_embeddings.shape[1]
+
+
+    sample_classified_sample = np.zeros(
+        shape=(cnt_type, MaxSize, sample_embedding_dimension))
+    sample_classified_cnt = [0 for i in range(10)]
+
+    target_classified_sample = np.zeros(
+        shape=(cnt_type, MaxSize, target_embedding_dimension))
+    target_classified_cnt = [0 for i in range(10)]
+
+    for i in range(sample_cnt_sample):
+        sample_classified_sample[int(sample_labels[i])][sample_classified_cnt[int(sample_labels[i])]] = sample_embeddings[i]
+        sample_classified_cnt[int(sample_labels[i])] += 1
+
+    for i in range(target_cnt_sample):
+        target_classified_sample[int(target_labels[i])][target_classified_cnt[int(target_labels[i])]] = target_embeddings[i]
+        target_classified_cnt[int(target_labels[i])] += 1
+
+
+    print("our selected anchor from class",chosen_class)
+
+    list_avg_dist=[]
+    for i in range(sample_classified_cnt[chosen_class]):
+        anchor=sample_classified_sample[chosen_class][i]
+        total_dist=0
+        for j in range(target_classified_cnt[chosen_class]):
+            current_dist = np.linalg.norm(
+                target_classified_sample[chosen_class][j]-anchor, ord=2, keepdims=False)
+            total_dist+=current_dist
+        avg_dist=total_dist/target_classified_cnt[chosen_class]
+        list_avg_dist.append(avg_dist)
+    #print(list_max_dist)
+    np_avg_dist = np.array(list_avg_dist)
+
+    my_bin=[]
+    for i in range(31):
+        my_bin.append(0.1*i)
+
+    plt.hist(np_avg_dist, bins =  my_bin) 
+    plt.title("histogram") 
+    plt.savefig("./saved_pics/"+image_name)
+    plt.show()
+
+#max_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_train_to_train.jpg")
+#max_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_test_to_train.jpg")
+
+#max_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_train_to_test.jpg")
+#max_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_test_to_test.jpg")
+
+
+avg_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_train_to_test.jpg")
+avg_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_train_to_train.jpg")
+#avg_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_test_to_test.jpg")
+#avg_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_test_to_train.jpg")
 
 
 

@@ -72,7 +72,7 @@ def train_epoch(train_loader, model, loss_fn, optimizer, cuda, log_interval, met
         losses.append(loss.item())
         total_loss += loss.item()
         loss.backward()
-        #optimizer.step()
+        optimizer.step()
 
         for metric in metrics:
             metric(outputs, target, loss_outputs)
