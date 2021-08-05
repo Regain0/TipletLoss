@@ -15,8 +15,9 @@ from trainer import fit
 from torch.utils import data
 import time
 import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
-dim_embedding=10
+dim_embedding=200
 
 # --------------------------------------------load CIFAR10-----------------------------------------
 transform = transforms.Compose(
@@ -102,31 +103,6 @@ def extract_embeddings(dataloader, model):
 
 
 # --------------------------------------------Calculating-----------------------------------------
-# We'll create mini batches by sampling labels that will be present in the mini batch and number of examples from each class
-train_batch_sampler = BalancedBatchSampler(torch.tensor(
-    np.asarray(trainset.targets)), n_classes=10, n_samples=25)
-test_batch_sampler = BalancedBatchSampler(torch.tensor(
-    np.asarray(testset.targets)), n_classes=10, n_samples=25)
-
-cuda = True
-kwargs = {'num_workers': 1, 'pin_memory': True} if cuda else {}
-online_train_loader = torch.utils.data.DataLoader(
-    trainset, batch_sampler=train_batch_sampler, **kwargs)
-online_test_loader = torch.utils.data.DataLoader(
-    testset, batch_sampler=test_batch_sampler, **kwargs)
-
-# Set up the network and training parameters
-'''
-net = VGG('shallow')
-
-if torch.cuda.device_count() > 1:
-    print("Let's use", torch.cuda.device_count(), "GPUs!")
-    # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
-    net = nn.DataParallel(net)
-
-net.to(device)
-'''
-
 
 margin = .6
 embedding_net = VGG('VGG11')
@@ -140,7 +116,7 @@ if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 model.to(device)
 
-PATH = './saved_models/vgg11_ran_20.pth'
+PATH = './saved_models/best.pth'
 SD=torch.load(PATH)
 model.load_state_dict(SD)
 
@@ -182,10 +158,10 @@ print(test_embeddings_ocl)
 print(type(test_labels_ocl))
 print(test_labels_ocl)
 
-print("----------train set----------")
+#print("----------train set----------")
 #cal_avg_dist(train_embeddings_ocl,train_labels_ocl,10)
 print("----------test set----------")
-#cal_avg_dist(test_embeddings_ocl,test_labels_ocl,10)
+##cal_avg_dist(test_embeddings_ocl,test_labels_ocl,10)
 
 def dist_from_single(anchor,anchor_class, train_embeddings, train_labels,test_embeddings,test_labels, cnt_type):
     assert train_embeddings.shape[0] == train_labels.shape[0]
@@ -265,6 +241,78 @@ def dist_from_single(anchor,anchor_class, train_embeddings, train_labels,test_em
         print("avg_dist from anchor",avg_dist)
         print("max_dist from anchor",max_dist)
         print("min_dist from anchor",min_dist)
+
+def avgdist_from_mult(count_anchor,test_or_train,anchor_class, train_embeddings, train_labels,test_embeddings,test_labels, cnt_type):    
+    assert train_embeddings.shape[0] == train_labels.shape[0]
+    assert test_embeddings.shape[0] == test_labels.shape[0]
+    train_cnt_sample = train_embeddings.shape[0]
+    train_embedding_dimension = train_embeddings.shape[1]
+    test_cnt_sample = test_embeddings.shape[0]
+    test_embedding_dimension = test_embeddings.shape[1]
+
+    train_classified_sample = np.zeros(
+        shape=(cnt_type, MaxSize, train_embedding_dimension))
+    train_classified_cnt = [0 for i in range(10)]
+
+    test_classified_sample = np.zeros(
+        shape=(cnt_type, MaxSize, test_embedding_dimension))
+    test_classified_cnt = [0 for i in range(10)]
+
+    for i in range(train_cnt_sample):
+        train_classified_sample[int(train_labels[i])][train_classified_cnt[int(train_labels[i])]] = train_embeddings[i]
+        train_classified_cnt[int(train_labels[i])] += 1
+
+    for i in range(test_cnt_sample):
+        test_classified_sample[int(test_labels[i])][test_classified_cnt[int(test_labels[i])]] = test_embeddings[i]
+        test_classified_cnt[int(test_labels[i])] += 1
+
+    if(test_or_train=='test'):
+        anchors = test_classified_sample[anchor_class][:count_anchor]
+    elif(test_or_train=='train'):
+        anchors = train_classified_sample[anchor_class][:count_anchor]
+
+    print("our selected anchor from class",anchor_class)
+
+    print("-------------------from train set---------------------")
+
+    for i in range(cnt_type):
+        total_dist = 0
+
+        for anchor in anchors:
+            for j in range(train_classified_cnt[i]):
+                current_dist = np.linalg.norm(
+                    train_classified_sample[i][j]-anchor, ord=2, keepdims=False)
+                total_dist += current_dist
+
+                    
+        avg_dist = total_dist/(train_classified_cnt[i]*count_anchor)
+
+        print("class",i)
+        print("avg_dist from anchor",avg_dist)
+
+
+    print("-------------------from test set---------------------")
+
+    for i in range(cnt_type):
+        total_dist = 0
+
+        for anchor in anchors:
+            for j in range(test_classified_cnt[i]):
+                current_dist = np.linalg.norm(
+                    test_classified_sample[i][j]-anchor, ord=2, keepdims=False)
+                total_dist += current_dist
+                
+        avg_dist = total_dist/(test_classified_cnt[i]*count_anchor)
+
+        print("class",i)
+        print("avg_dist from anchor",avg_dist)
+
+#print("xxxxxxxxxxxxxxxxxxx pick 100 samples from training set xxxxxxxxxxxxxxxxxxxxxx")
+#avgdist_from_mult(100,"train",6,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10)
+
+#print("xxxxxxxxxxxxxxxxxxx pick 100 samples from test set xxxxxxxxxxxxxxxxxxxxxx")
+#avgdist_from_mult(100,"test",6,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10)
+
 
 '''
 print("----------one point picked from train set----------")
@@ -393,10 +441,30 @@ def avg_dist_distribution(chosen_class,sample_embeddings, sample_labels,target_e
 #max_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_test_to_test.jpg")
 
 
-avg_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_train_to_test.jpg")
-avg_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_train_to_train.jpg")
+#avg_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_train_to_test.jpg")
+#avg_dist_distribution(0,train_embeddings_ocl,train_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_train_to_train.jpg")
 #avg_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,test_embeddings_ocl,test_labels_ocl,10,"class_0_sample_test_to_test.jpg")
 #avg_dist_distribution(0,test_embeddings_ocl,test_labels_ocl,train_embeddings_ocl,train_labels_ocl,10,"class_0_sample_test_to_train.jpg")
 
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
+              '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
+              '#bcbd22', '#17becf']
+def plot_embeddings(embeddings, targets,plot_name, xlim=None, ylim=None):
+    plt.figure(figsize=(10,10))
 
+    pca = PCA(n_components=2)
+    pca.fit(embeddings)
+    n_embeddings = pca.transform(embeddings)
 
+    for i in range(10):
+        inds = np.where(targets==i)[0]
+        plt.scatter(n_embeddings[inds,0], n_embeddings[inds,1], alpha=0.5, color=colors[i])
+    if xlim:
+        plt.xlim(xlim[0], xlim[1])
+    if ylim:
+        plt.ylim(ylim[0], ylim[1])
+    plt.legend(classes)
+    plt.savefig("./plot_embd/"+plot_name)
+
+plot_embeddings(train_embeddings_ocl,train_labels_ocl,"e10")
+plot_embeddings(test_embeddings_ocl,test_labels_ocl,"e10_test")

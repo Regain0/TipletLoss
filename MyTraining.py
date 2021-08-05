@@ -13,9 +13,31 @@ import torch.optim as optim
 from trainer import fit
 from torch.utils import data
 import os
+import argparse
+from torch.nn import functional as F
+from lightgbm import LGBMClassifier
+from sklearn.metrics import accuracy_score
 
-dim_embedding=10
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--margin",
+                    default=0.6,
+                    type=float,
+                    help="Margin in triplet loss.")
+parser.add_argument("--out_dim",
+                    default=10,
+                    type=int,
+                    help="dimension of final linear layer")
+parser.add_argument("--epoch",
+                    default=20,
+                    type=int,
+                    help="traing epoch")
+parser.add_argument(
+    "--model_name", type=str, default="default",
+    help="name used to save .pth")
+args = parser.parse_args()
+
+dim_embedding = args.out_dim
 
 # --------------------------------------------load CIFAR10-----------------------------------------
 transform = transforms.Compose(
@@ -114,12 +136,12 @@ online_train_loader = torch.utils.data.DataLoader(
 online_test_loader = torch.utils.data.DataLoader(
     testset, batch_sampler=test_batch_sampler, **kwargs)
 
-cuda=device
+cuda = device
 
 # Set up the network and training parameters
 
 
-margin = .6
+margin = args.margin
 embedding_net = VGG('VGG11')
 model = embedding_net
 # if cuda:
@@ -136,23 +158,38 @@ loss_fn = OnlineTripletLoss(margin, RandomNegativeTripletSelector(margin))
 lr = 1e-5
 optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
 scheduler = lr_scheduler.StepLR(optimizer, 8, gamma=0.1, last_epoch=-1)
-n_epochs = 20
+n_epochs = args.epoch
 log_interval = 150
 
 fit(online_train_loader, online_test_loader, model, loss_fn, optimizer, scheduler,
     n_epochs, cuda, log_interval, metrics=[AverageNonzeroTripletsMetric()])
 
 # save our model
-#PATH = './saved_models/shallow2_ran_1.pth'
-#torch.save(model.state_dict(), PATH)
+PATH = './saved_models/'+args.model_name+'.pth'
+torch.save(model.state_dict(), PATH)
 
 train_embeddings_ocl, train_labels_ocl = extract_embeddings(trainloader, model)
 test_embeddings_ocl, test_labels_ocl = extract_embeddings(testloader, model)
 
+classifier = LGBMClassifier()
+classifier.fit(train_embeddings_ocl, train_labels_ocl)
+
+predict_train = classifier.predict(train_embeddings_ocl)
+predict_test = classifier.predict(test_embeddings_ocl)
+
+print("accuracy on training")
+print(accuracy_score(train_labels_ocl, predict_train))
+print("accuracy on test")
+print(accuracy_score(test_labels_ocl, predict_test))
+
+
+'''
 my_dataset = data.TensorDataset(torch.Tensor(
     train_embeddings_ocl), torch.Tensor(train_labels_ocl))
 trainloader = torch.utils.data.DataLoader(my_dataset, batch_size=256,
                                           shuffle=True, num_workers=0)
+
+
 
 
 class Final(nn.Module):
@@ -162,6 +199,7 @@ class Final(nn.Module):
 
     def forward(self, x):
         out = self.classifier(x)
+        #out = F.softmax(out)
         return out
 
 
@@ -206,3 +244,4 @@ with torch.no_grad():
 
 print('Accuracy of the network on the 10000 test images: %d %%' % (
     100 * correct / total))
+'''
